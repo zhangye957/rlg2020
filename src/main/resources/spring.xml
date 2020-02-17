@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns="http://www.springframework.org/schema/beans"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
+       http://www.springframework.org/schema/tx
+       http://www.springframework.org/schema/tx/spring-tx.xsd
+       http://www.springframework.org/schema/aop
+       http://www.springframework.org/schema/aop/spring-aop.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context.xsd"
+>
+
+    <!--注解扫描-->
+    <context:component-scan base-package="com.itdr">
+        <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+    </context:component-scan>
+
+    <context:property-placeholder location="classpath:db.properties"/>
+
+    <!--&lt;!&ndash;配置spring的内置连接池&ndash;&gt;-->
+    <!--<bean id="driverManagerDataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">-->
+        <!--<property name="driverClassName" value="${driverClassName}"></property>-->
+        <!--<property name="url" value="jdbc:mysql://localhost:3306/itdr11"></property>-->
+        <!--<property name="username" value="${username}"></property>-->
+        <!--<property name="password" value="123456"></property>-->
+    <!--</bean>-->
+
+    <!--<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">-->
+        <!--&lt;!&ndash; 配置mybatis核心配置文件 &ndash;&gt;-->
+        <!--<property name="configLocation" value="classpath:mb.xml" />-->
+        <!--&lt;!&ndash; 配置数据源 &ndash;&gt;-->
+        <!--<property name="dataSource" ref="driverManagerDataSource" />-->
+    <!--</bean>-->
+
+    <!--使用默认数据库连接池 -->
+    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value="${jdbc.driverclass}" />
+        <property name="url" value="${jdbc.url}" />
+        <property name="username" value="${jdbc.username}" />
+        <property name="password" value="${jdbc.password}" />
+    </bean>
+
+    <!-- 配置SqlSessionFactory -->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <!-- 配置mybatis核心配置文件 -->
+        <property name="configLocation" value="classpath:mb.xml" />
+        <!-- 配置数据源 -->
+        <property name="dataSource" ref="dataSource" />
+    </bean>
+
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <!-- 配置Mapper接口 -->
+        <property name="basePackage" value="com.itdr.mapper" />
+    </bean>
+
+</beans>
