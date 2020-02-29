@@ -6,6 +6,7 @@ import com.itdr.config.TokenCache;
 import com.itdr.mapper.UserMapper;
 import com.itdr.pojo.User;
 import com.itdr.service.UserService;
+import com.itdr.utils.MD5Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -33,8 +34,11 @@ public class UserServiceImpl implements UserService {
                     ConstCode.UserEnum.EMPTY_PASSWORD.getDesc());
         }
 
+        //MD5加密
+        String MD5Password = MD5Util.getMD5Code(password);
+
         //查询用户
-        User u = userMapper.selectByUserNameAndPassword(username,password);
+        User u = userMapper.selectByUserNameAndPassword(username,MD5Password);
         if(u == null){
             return ServerResponse.defeatedRS(
                     ConstCode.UserEnum.FAIL_LOGIN.getCode(),
@@ -88,6 +92,8 @@ public class UserServiceImpl implements UserService {
                     ConstCode.UserEnum.EXIST_USEROREMAIL.getDesc());
         }
 
+        //MD5加密
+        u.setPassword(MD5Util.getMD5Code(u.getPassword()));
 
         //注册用户信息
         int insert = userMapper.insert(u);
@@ -272,8 +278,12 @@ public class UserServiceImpl implements UserService {
                     ConstCode.UserEnum.UNLAWFULNESS_TOKEN.getDesc());
         }
 
+        //MD5加密
+        String MD5Password = MD5Util.getMD5Code(passwordNew);
+
+
         //重置密码
-        int i = userMapper.updateByUserNameAndPasswordNew(username,passwordNew);
+        int i = userMapper.updateByUserNameAndPasswordNew(username,MD5Password);
         if(i<=0){
             return ServerResponse.defeatedRS(
                     ConstCode.UserEnum.DEFEACTED_PASSWORDNEW.getCode(),
@@ -299,8 +309,13 @@ public class UserServiceImpl implements UserService {
                     ConstCode.UserEnum.EMPTY_PASSWORD.getDesc());
         }
 
+        //MD5加密，旧密码和新密码都要加密
+        String MD5PasswordOld = MD5Util.getMD5Code(passwordOld);
+        String MD5PasswordNew = MD5Util.getMD5Code(passwordNew);
+
+
         //更新密码
-        int i = userMapper.updateByUserNameAndPasswordOldAndPasswordNew(user.getUsername(),passwordOld,passwordNew);
+        int i = userMapper.updateByUserNameAndPasswordOldAndPasswordNew(user.getUsername(),MD5PasswordOld,MD5PasswordNew);
         if(i<=0){
             return ServerResponse.defeatedRS(
                     ConstCode.UserEnum.DEFEACTED_PASSWORDNEW.getCode(),

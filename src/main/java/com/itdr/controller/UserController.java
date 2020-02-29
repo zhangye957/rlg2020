@@ -3,12 +3,11 @@ package com.itdr.controller;
 import com.itdr.common.ServerResponse;
 import com.itdr.config.ConstCode;
 import com.itdr.pojo.User;
-import com.itdr.pojo.bo.UserVO;
+import com.itdr.pojo.vo.UserVO;
 import com.itdr.service.UserService;
 import com.itdr.utils.ObjectToVOUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.HttpSessionRequiredException;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -74,7 +73,7 @@ public class UserController {
     @RequestMapping("get_user_info.do")
     public ServerResponse<User> getUserInfo(HttpSession session) {
         User user = (User) session.getAttribute("user");
-        UserVO userVO = ObjectToVOUtil.UserToUserVO(user);
+        UserVO userVO = ObjectToVOUtil.userToUserVO(user);
         return ServerResponse.successRS(userVO);
     }
 

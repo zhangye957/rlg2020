@@ -19,12 +19,34 @@
     <result column="detail" property="detail" jdbcType="LONGVARCHAR" />
   </resultMap>
 
+  <!--代码片段-->
+  <sql id="Base_Column_List">
+    id,category_id,name,subtitle,main_image,sub_images,detail,price,stock,status,is_new,is_hot,is_banner,create_time,update_time
+  </sql>
+
+  <!--根据ID查询商品数据-->
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from neuedu_product
+    where id = #{productId,jdbcType=INTEGER}
+  </select>
+
+
+  <!--根据商品名称模糊查询-->
+  <select id="selectByName" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from neuedu_product
+    where name like #{keyWord}
+
+  </select>
+
 
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from neuedu_product
     where id = #{id,jdbcType=INTEGER}
   </delete>
-
   <update id="updateByPrimaryKey" parameterType="com.itdr.pojo.Product" >
     update neuedu_product
     set category_id = #{categoryId,jdbcType=INTEGER},

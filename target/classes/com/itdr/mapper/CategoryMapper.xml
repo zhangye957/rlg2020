@@ -19,7 +19,18 @@
     from neuedu_category
     where id = #{id,jdbcType=INTEGER}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+
+  <!--根据父id查询直接子类-->
+    <select id="selectByParentID" resultMap="BaseResultMap">
+      select
+      <include refid="Base_Column_List" />
+      from neuedu_category
+      where parent_id = #{pid,jdbcType=INTEGER}
+    </select>
+
+
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from neuedu_category
     where id = #{id,jdbcType=INTEGER}
   </delete>

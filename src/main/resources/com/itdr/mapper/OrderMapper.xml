@@ -27,6 +27,24 @@
     from neuedu_order
     where id = #{id,jdbcType=INTEGER}
   </select>
+
+  <!--根据订单号和用户id查询订单-->
+    <select id="selectByOrderNoAndUserId" resultMap="BaseResultMap">
+      select
+      <include refid="Base_Column_List" />
+      from neuedu_order
+      where order_no = #{orderNo} and user_id=#{userId}
+    </select>
+
+  <!--根据订单号查询订单-->
+  <select id="selectByOrderNo" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from neuedu_order
+    where order_no = #{orderNo}
+  </select>
+
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from neuedu_order
     where id = #{id,jdbcType=INTEGER}
@@ -181,19 +199,10 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.itdr.pojo.Order" >
     update neuedu_order
-    set user_id = #{userId,jdbcType=INTEGER},
-      order_no = #{orderNo,jdbcType=BIGINT},
-      shipping_id = #{shippingId,jdbcType=INTEGER},
-      payment = #{payment,jdbcType=DECIMAL},
-      payment_type = #{paymentType,jdbcType=INTEGER},
-      postage = #{postage,jdbcType=INTEGER},
+    set
       status = #{status,jdbcType=INTEGER},
       payment_time = #{paymentTime,jdbcType=TIMESTAMP},
-      send_time = #{sendTime,jdbcType=TIMESTAMP},
-      end_time = #{endTime,jdbcType=TIMESTAMP},
-      close_time = #{closeTime,jdbcType=TIMESTAMP},
-      create_time = #{createTime,jdbcType=TIMESTAMP},
-      update_time = #{updateTime,jdbcType=TIMESTAMP}
+      update_time = now()
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

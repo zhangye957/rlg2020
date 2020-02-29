@@ -24,7 +24,16 @@
     from neuedu_order_item
     where id = #{id,jdbcType=INTEGER}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+
+  <!--根据订单编号查询订单详情-->
+    <select id="selectByOrderNoAndUserId" resultMap="BaseResultMap">
+      select
+      <include refid="Base_Column_List" />
+      from neuedu_order_item
+      where order_no = #{orderNo} and user_id=#{userId}
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from neuedu_order_item
     where id = #{id,jdbcType=INTEGER}
   </delete>

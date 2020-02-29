@@ -50,6 +50,14 @@
         <property name="configLocation" value="classpath:mb.xml" />
         <!-- 配置数据源 -->
         <property name="dataSource" ref="dataSource" />
+        <!-- 分页插件 -->
+        <property name="plugins">
+            <array>
+                <bean class="com.github.pagehelper.PageInterceptor">
+                    <property name="properties" value="mysql"/>
+                </bean>
+            </array>
+        </property>
     </bean>
 
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
